@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Google_Translate" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Google_Translate" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="TextsToBeTranslated" Type="InArgument(scg:IList(x:String))" />
     <x:Property Name="Translations" Type="OutArgument(scg:IList(x:String))" />
@@ -8,10 +8,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1641.33333333333,1966.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1641.33333333333,1986</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Google_Translate_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="64">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -50,10 +50,16 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Dynamic</x:String>
+      <x:String>System.Collections.Specialized</x:String>
+      <x:String>UiPath.Web.Activities</x:String>
+      <x:String>UiPath.Platform.ResourceHandling</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="37">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -89,15 +95,16 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Collections.Immutable</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
-    </sco:Collection>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
     <scg:Dictionary x:TypeArguments="x:String, x:Object">
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="Google_Translate" sap:VirtualizedContainerService.HintSize="722.666666666667,1902" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Google_Translate" sap:VirtualizedContainerService.HintSize="764.666666666667,1921.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="GoogleTranslateURL" />
     </Sequence.Variables>
@@ -106,7 +113,7 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap:VirtualizedContainerService.HintSize="680.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+    <Assign sap:VirtualizedContainerService.HintSize="722.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_4">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[GoogleTranslateURL]</OutArgument>
       </Assign.To>
@@ -114,104 +121,115 @@
         <InArgument x:TypeArguments="x:String">[String.Format("https://translate.google.com/?sl={0}&amp;tl={1}&amp;op=translate", InputLanguageCode, OutputLanguageCode)]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="680.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[String.Format(&quot;Running crawler on the following URL: {0}&quot;, GoogleTranslateURL)]" />
-    <ui:OpenBrowser AutomaticallyDownloadWebDriver="{x:Null}" CommunicationMethod="{x:Null}" NewSession="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open Browser" Hidden="True" sap:VirtualizedContainerService.HintSize="680.666666666667,1573.33333333333" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" Private="False" Url="[GoogleTranslateURL]">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="722.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[String.Format(&quot;Running crawler on the following URL: {0}&quot;, GoogleTranslateURL)]" />
+    <ui:OpenBrowser AutomaticallyDownloadWebDriver="{x:Null}" CommunicationMethod="{x:Null}" NewSession="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open Browser" Hidden="True" sap:VirtualizedContainerService.HintSize="722.666666666667,1592.66666666667" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" Private="False" Url="[GoogleTranslateURL]">
       <ui:OpenBrowser.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
           </ActivityAction.Argument>
-          <Sequence sap:VirtualizedContainerService.HintSize="646.666666666667,1470.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+          <Sequence sap:VirtualizedContainerService.HintSize="688.666666666667,1490" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="604.666666666667,1232.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <ui:MaximizeWindow Window="{x:Null}" DisplayName="Maximize Window" sap:VirtualizedContainerService.HintSize="646.666666666667,22" sap2010:WorkflowViewState.IdRef="MaximizeWindow_1" />
+            <Sequence sap:VirtualizedContainerService.HintSize="646.666666666667,1336" sap2010:WorkflowViewState.IdRef="Sequence_12">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="562.666666666667,1006" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[TextsToBeTranslated]">
-                <ui:ForEach.Body>
-                  <ActivityAction x:TypeArguments="x:String">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="x:String" Name="Text" />
-                    </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="526,881.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                      <Sequence.Variables>
-                        <Variable x:TypeArguments="x:String" Name="TextTranslated" />
-                      </Sequence.Variables>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <ui:TypeInto AlterIfDisabled="{x:Null}" DelayBetweenKeys="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" ContinueOnError="True" DelayBefore="300" DelayMS="0" DisplayName="Type Into 'TEXTAREA'" EmptyField="True" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="TypeInto_3" SimulateType="False" Text="[Text]">
-                        <ui:TypeInto.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="bb755bac-3d16-4087-b2b5-6f5cf142f06e" InformativeScreenshot="dd07dd6bf7d1e173f9aef8062118de57" Selector="&lt;webctrl tag='TEXTAREA' /&gt;">
-                            <ui:Target.TimeoutMS>
-                              <InArgument x:TypeArguments="x:Int32" />
-                            </ui:Target.TimeoutMS>
-                            <ui:Target.WaitForReady>
-                              <InArgument x:TypeArguments="ui:WaitForReady" />
-                            </ui:Target.WaitForReady>
-                          </ui:Target>
-                        </ui:TypeInto.Target>
-                      </ui:TypeInto>
-                      <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
-                      <ui:GetValue ContinueOnError="True" DisplayName="Get Text 'DIV'" sap:VirtualizedContainerService.HintSize="484,106" sap2010:WorkflowViewState.IdRef="GetValue_1">
-                        <ui:GetValue.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="62b6bd7e-a6a0-4234-931f-d383cca3eda7" InformativeScreenshot="9629e703a61aefdd577390279f31ccbd" Selector="[String.Format(&quot;&lt;webctrl css-selector='span[data-language-for-alternatives={0}] &amp;gt; span' /&gt;&quot;, OutputLanguageCode)]">
-                            <ui:Target.TimeoutMS>
-                              <InArgument x:TypeArguments="x:Int32" />
-                            </ui:Target.TimeoutMS>
-                            <ui:Target.WaitForReady>
-                              <InArgument x:TypeArguments="ui:WaitForReady" />
-                            </ui:Target.WaitForReady>
-                          </ui:Target>
-                        </ui:GetValue.Target>
-                        <ui:GetValue.Value>
-                          <OutArgument x:TypeArguments="x:String">[TextTranslated]</OutArgument>
-                        </ui:GetValue.Value>
-                      </ui:GetValue>
-                      <If Condition="[Translations Is Nothing]" sap:VirtualizedContainerService.HintSize="484,345.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
-                        <If.Then>
-                          <Sequence sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                            <sap:WorkflowViewStateService.ViewState>
-                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                              </scg:Dictionary>
-                            </sap:WorkflowViewStateService.ViewState>
-                            <Assign sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="scg:IList(x:String)">[Translations]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="scg:IList(x:String)">[new List(Of String)]</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                          </Sequence>
-                        </If.Then>
-                        <If.Else>
-                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
-                            <sap:WorkflowViewStateService.ViewState>
-                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                              </scg:Dictionary>
-                            </sap:WorkflowViewStateService.ViewState>
-                          </Sequence>
-                        </If.Else>
-                      </If>
-                      <AddToCollection x:TypeArguments="x:String" Collection="[Translations]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[TextTranslated]" />
-                    </Sequence>
-                  </ActivityAction>
-                </ui:ForEach.Body>
-              </ui:ForEach>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="562.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[String.Join(&quot;,&quot;, Translations)]" />
+              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="604.666666666667,1098" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="njl:JObject" Name="TestJSONObject" />
+                  <Variable x:TypeArguments="x:String" Name="OutputJSONFileFolder" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="562.666666666667,1006" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[TextsToBeTranslated]">
+                  <ui:ForEach.Body>
+                    <ActivityAction x:TypeArguments="x:String">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:String" Name="Text" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="526,881.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="x:String" Name="TextTranslated" />
+                        </Sequence.Variables>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:TypeInto AlterIfDisabled="{x:Null}" DelayBetweenKeys="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" ContinueOnError="True" DelayBefore="300" DelayMS="0" DisplayName="Type Into 'TEXTAREA'" EmptyField="True" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="TypeInto_3" SimulateType="False" Text="[Text]">
+                          <ui:TypeInto.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="bb755bac-3d16-4087-b2b5-6f5cf142f06e" InformativeScreenshot="dd07dd6bf7d1e173f9aef8062118de57" Selector="&lt;webctrl tag='TEXTAREA' /&gt;">
+                              <ui:Target.TimeoutMS>
+                                <InArgument x:TypeArguments="x:Int32" />
+                              </ui:Target.TimeoutMS>
+                              <ui:Target.WaitForReady>
+                                <InArgument x:TypeArguments="ui:WaitForReady" />
+                              </ui:Target.WaitForReady>
+                            </ui:Target>
+                          </ui:TypeInto.Target>
+                        </ui:TypeInto>
+                        <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                        <ui:GetValue ContinueOnError="True" DisplayName="Get Text 'DIV'" sap:VirtualizedContainerService.HintSize="484,106" sap2010:WorkflowViewState.IdRef="GetValue_1">
+                          <ui:GetValue.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="62b6bd7e-a6a0-4234-931f-d383cca3eda7" InformativeScreenshot="9629e703a61aefdd577390279f31ccbd" Selector="[String.Format(&quot;&lt;webctrl css-selector='span[data-language-for-alternatives={0}] &amp;gt; span' /&gt;&quot;, OutputLanguageCode)]">
+                              <ui:Target.TimeoutMS>
+                                <InArgument x:TypeArguments="x:Int32" />
+                              </ui:Target.TimeoutMS>
+                              <ui:Target.WaitForReady>
+                                <InArgument x:TypeArguments="ui:WaitForReady" />
+                              </ui:Target.WaitForReady>
+                            </ui:Target>
+                          </ui:GetValue.Target>
+                          <ui:GetValue.Value>
+                            <OutArgument x:TypeArguments="x:String">[TextTranslated]</OutArgument>
+                          </ui:GetValue.Value>
+                        </ui:GetValue>
+                        <If Condition="[Translations Is Nothing]" sap:VirtualizedContainerService.HintSize="484,345.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+                          <If.Then>
+                            <Sequence sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <Assign sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="scg:IList(x:String)">[Translations]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="scg:IList(x:String)">[new List(Of String)]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </If.Then>
+                          <If.Else>
+                            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                            </Sequence>
+                          </If.Else>
+                        </If>
+                        <AddToCollection x:TypeArguments="x:String" Collection="[Translations]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[TextTranslated]" />
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEach.Body>
+                </ui:ForEach>
+              </Sequence>
+              <ui:CloseWindow Selector="{x:Null}" TimeoutMS="{x:Null}" UseWindow="{x:Null}" DisplayName="Close Window 'chrome.exe Google'" sap:VirtualizedContainerService.HintSize="604.666666666667,106" sap2010:WorkflowViewState.IdRef="CloseWindow_1" InformativeScreenshot="a8cb8e83a9300cba86742a0dccf71152" WaitForReady="INTERACTIVE" />
             </Sequence>
-            <ui:CloseWindow Selector="{x:Null}" TimeoutMS="{x:Null}" UseWindow="{x:Null}" DisplayName="Close Window 'chrome.exe Google'" sap:VirtualizedContainerService.HintSize="604.666666666667,106" sap2010:WorkflowViewState.IdRef="CloseWindow_1" InformativeScreenshot="a8cb8e83a9300cba86742a0dccf71152" WaitForReady="INTERACTIVE" />
           </Sequence>
         </ActivityAction>
       </ui:OpenBrowser.Body>
